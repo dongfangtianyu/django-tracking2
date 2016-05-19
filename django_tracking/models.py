@@ -72,10 +72,12 @@ class Visitor(models.Model):
 class Pageview(models.Model):
     visitor = models.ForeignKey(Visitor, related_name='pageviews')
     url = models.TextField(null=False, editable=False)
+    status_code = models.CharField(max_length=20, null=False)
     referer = models.TextField(null=True, editable=False)
     query_string = models.TextField(null=True, editable=False)
     method = models.CharField(max_length=20, null=True)
     view_time = models.DateTimeField()
+    request_meta = models.TextField(null=True,editable=False)
 
     objects = PageviewManager()
 

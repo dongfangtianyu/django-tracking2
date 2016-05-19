@@ -1,6 +1,7 @@
 import re
 import logging
 import warnings
+import json
 
 from django.db import IntegrityError, transaction
 from django.utils import timezone
@@ -56,14 +57,10 @@ class VisitorTrackingMiddleware(object):
     def _refresh_visitor(self, user, request, visit_time):
         # A Visitor row is unique by session_key
         session_key = request.session.session_key
-
-        try:
-            visitor = Visitor.objects.get(pk=session_key)
-        except Visitor.DoesNotExist:
-            # Log the ip address. Start time is managed via the field
-            # `default` value
-            ip_address = get_ip_address(request)
-            visitor = Visitor(pk=session_key, ip_address=ip_address)
+        ip_address = get_ip_address(request)
+        # Log the ip address. Start time is managed via the field
+        # `default` value
+        visitor = Visitor.objects.get_or_create(pk=session_key, ip_address=ip_address)
 
         # Update the user field if the visitor user is not set. This
         # implies authentication has occured on this request and now
@@ -87,6 +84,7 @@ class VisitorTrackingMiddleware(object):
             time_on_site = total_seconds(visit_time - visitor.start_time)
         visitor.time_on_site = int(time_on_site)
 
+        visitor.request_meat = json.dumps(request.META)
         try:
             with transaction.atomic():
                 visitor.save()
@@ -104,7 +102,7 @@ class VisitorTrackingMiddleware(object):
 
         return visitor
 
-    def _add_pageview(self, visitor, request, view_time):
+    def _add_pageview(self, visitor, request, response, view_time):
         referer = None
         query_string = None
 
@@ -117,7 +115,7 @@ class VisitorTrackingMiddleware(object):
         pageview = Pageview(
             visitor=visitor, url=request.path, view_time=view_time,
             method=request.method, referer=referer,
-            query_string=query_string)
+            query_string=query_string,status_code=response.status_code)
         pageview.save()
 
     def process_response(self, request, response):
@@ -146,6 +144,6 @@ class VisitorTrackingMiddleware(object):
         visitor = self._refresh_visitor(user, request, now)
 
         if TRACK_PAGEVIEWS:
-            self._add_pageview(visitor, request, now)
+            self._add_pageview(visitor, request, response, now)
 
         return response
