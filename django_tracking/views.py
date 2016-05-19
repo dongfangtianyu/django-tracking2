@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.utils.timezone import now
 
-from tracking.models import Visitor, Pageview
-from tracking.settings import TRACK_PAGEVIEWS
+from django_tracking.models import Visitor, Pageview
+from django_tracking.settings import TRACK_PAGEVIEWS
 
 log = logging.getLogger(__file__)
 

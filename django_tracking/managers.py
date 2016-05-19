@@ -14,8 +14,8 @@ except ImportError:
 
 from django.db import models
 from django.db.models import Count, Avg
-from tracking.settings import TRACK_PAGEVIEWS, TRACK_ANONYMOUS_USERS
-from tracking.cache import CacheManager
+from django_tracking.settings import TRACK_PAGEVIEWS, TRACK_ANONYMOUS_USERS
+from django_tracking.cache import CacheManager
 
 
 class VisitorManager(CacheManager):

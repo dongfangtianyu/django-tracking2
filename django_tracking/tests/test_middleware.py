@@ -7,7 +7,7 @@ try:
 except ImportError:
     from mock import patch
 
-from tracking.models import Visitor, Pageview
+from django_tracking.models import Visitor, Pageview
 
 if sys.version_info[0] == 3:
     def _u(s):

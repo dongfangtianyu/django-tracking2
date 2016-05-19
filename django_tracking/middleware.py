@@ -6,9 +6,9 @@ from django.db import IntegrityError, transaction
 from django.utils import timezone
 from django.utils.encoding import smart_text
 
-from tracking.models import Visitor, Pageview
-from tracking.utils import get_ip_address, total_seconds
-from tracking.settings import (
+from django_tracking.models import Visitor, Pageview
+from django_tracking.utils import get_ip_address, total_seconds
+from django_tracking.settings import (
     TRACK_AJAX_REQUESTS,
     TRACK_ANONYMOUS_USERS,
     TRACK_IGNORE_STATUS_CODES,

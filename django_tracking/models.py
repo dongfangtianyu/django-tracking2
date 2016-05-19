@@ -8,8 +8,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.signals import user_logged_out
 from django.db.models.signals import post_save
-from tracking.managers import VisitorManager, PageviewManager
-from tracking.settings import TRACK_USING_GEOIP
+from django_tracking.managers import VisitorManager, PageviewManager
+from django_tracking.settings import TRACK_USING_GEOIP
 
 GEOIP_CACHE_TYPE = getattr(settings, 'GEOIP_CACHE_TYPE', 4)
 
@@ -83,6 +83,6 @@ class Pageview(models.Model):
         ordering = ('-view_time',)
 
 
-from tracking import handlers
+from django_tracking import handlers
 user_logged_out.connect(handlers.track_ended_session)
 post_save.connect(handlers.post_save_cache, sender=Visitor)

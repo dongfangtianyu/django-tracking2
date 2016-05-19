@@ -4,7 +4,7 @@ try:
 except ImportError:
     from mock import Mock
 
-from tracking.utils import get_ip_address
+from django_tracking.utils import get_ip_address
 
 
 class UtilsTestCase(TestCase):

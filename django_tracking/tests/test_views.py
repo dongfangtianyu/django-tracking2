@@ -17,8 +17,8 @@ except ImportError:
     # python2.6 doesn't have unittest.skip*
     from unittest2 import skipIf
 
-from tracking.admin import VisitorAdmin
-from tracking.models import Visitor
+from django_tracking.admin import VisitorAdmin
+from django_tracking.models import Visitor
 
 dj_version = django.get_version()
 

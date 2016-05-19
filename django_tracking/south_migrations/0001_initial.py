@@ -4,7 +4,7 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
-from tracking.compat import User
+from django_tracking.compat import User
 
 
 class Migration(SchemaMigration):
