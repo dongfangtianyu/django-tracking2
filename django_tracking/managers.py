@@ -2,7 +2,16 @@ from __future__ import division
 
 from datetime import timedelta
 from django.utils import timezone
-from django.contrib.auth import get_user_model
+try:
+    from django.contrib.auth import get_user_model
+except ImportError:
+    # django 1.4.5 django.contrib.auth has no "get_user_model"
+    from django.contrib.auth.models import User
+
+    def get_user_model():
+        return User
+
+
 from django.db import models
 from django.db.models import Count, Avg
 from tracking.settings import TRACK_PAGEVIEWS, TRACK_ANONYMOUS_USERS

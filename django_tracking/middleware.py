@@ -90,6 +90,10 @@ class VisitorTrackingMiddleware(object):
         try:
             with transaction.atomic():
                 visitor.save()
+
+        except AttributeError:
+            # django 1.4.5 transaction has no attribute "atomic"
+            visitor.save()
         except IntegrityError:
             # there is a small chance a second response has saved this
             # Visitor already and a second save() at the same time (having
